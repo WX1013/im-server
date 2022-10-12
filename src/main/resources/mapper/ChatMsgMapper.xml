@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wx.im.dao.ChatMsgMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.wx.im.entity.ChatMsg">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="update_user" jdbcType="BIGINT" property="updateUser"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_user" jdbcType="BIGINT" property="createUser"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="client_msg_id" jdbcType="VARCHAR" property="clientMsgId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="chat_id" jdbcType="BIGINT" property="chatId"/>
+        <result column="msg_type" jdbcType="VARCHAR" property="msgType"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,update_user,update_time,create_user,create_time,
+        client_msg_id, user_id, chat_id, msg_type, content, sort, deleted
+    </sql>
+
+</mapper>
