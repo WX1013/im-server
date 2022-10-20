@@ -19,13 +19,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.wx.im.utils.StrPool;
 import org.wx.im.websocket.handler.HttpRequestHandler;
 import org.wx.im.websocket.handler.WebSocketServerHandler;
-import org.wx.im.utils.AddressUtil;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.SocketException;
 
 /**
  * @author WangXin
@@ -93,11 +91,11 @@ public class SocketServer {
     private String getLocalIp() {
         String ip;
         try {
-            ip = AddressUtil.getHostIp();
+            ip = InetAddress.getLocalHost().getHostAddress();
             if (ip == null) {
                 ip = "127.0.0.1";
             }
-        } catch (SocketException e) {
+        } catch (Exception e) {
             log.warn("获取IP地址异常：{}", e.getMessage());
             ip = "127.0.0.1";
         }
@@ -113,13 +111,13 @@ public class SocketServer {
         while (!isStart) {
             try {
                 channelFuture = b.bind().sync();
-                log.info("IM-Server启动成功, 连接 ws://{}", channelFuture.channel().localAddress().toString().replace("/", StrPool.EMPTY));
+                log.info("IM-Server启动成功, 连接 ws:/{}", channelFuture.channel().localAddress());
                 isStart = true;
             } catch (Exception e) {
                 log.error("发生启动异常", e);
                 if (port > maxPort) {
                     // 一直到最大端口也没有启动成功，则不再运行
-                    throw new RuntimeException("7000~8000范围内无可用端口");
+                    throw new RuntimeException("无可用端口");
                 }
                 port++;
                 log.info("尝试一个新的端口：{}", port);

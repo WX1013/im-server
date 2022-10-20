@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: dlmu
+  name: im-server
+  labels:
+    app: im-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: im-server
+  template:
+    metadata:
+      labels:
+        app: im-server
+    spec:
+      containers:
+        - name: im-server
+          image: registry-dev.hzlinks.net/00-0000-dlhsdx/zbp/im-server:v1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+            - containerPort: 8999
+      imagePullSecrets:
+        - name: zyharbor
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: dlmu
+  labels:
+    app: im-server
+  name: im-server
+spec:
+  selector:
+    app: im-server
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: api
+    - port: 8999
+      targetPort: 8999
+      name: websocket
+  type: NodePort
